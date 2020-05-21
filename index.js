@@ -160,6 +160,10 @@ class Student extends Lambdasian {
     this.className = args.className;
     this.favSubjects = args.favSubjects;
   }
+
+  listSubjects() {
+    return `Loving ${this.favSubjects.toString()}!`
+  }
 }
 
 /*
