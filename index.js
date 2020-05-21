@@ -191,6 +191,10 @@ class ProjectManager extends Instructor {
     this.gradClassName = args.gradClassName;
     this.favInstructor = args.favInstructor;
   }
+
+  standUp(slackChannel) {
+    return `${this.name} announces to ${slackChannel}, @channel standy times!`;
+  }
 }
 
 /*
