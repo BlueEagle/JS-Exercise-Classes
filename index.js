@@ -136,6 +136,16 @@ class Instructor extends Lambdasian {
   grade(student, subject) {
     return `${student.name} recieves a perfect score on ${subject}`;
   }
+  adjustGradeBasedOnPersonalBias(student) {
+    let corruptionLevel = 50; // Optimally, this should be closer to 30
+    // console.log(`Current student grade: ${student.grade}`);
+    let quantifiedFeelings = Math.round(Math.random()*corruptionLevel);
+    // console.log(`I feel ${quantifiedFeelings} toward the student.`);
+    let arePositiveFeelings = (Math.random() >= .5) ? 1 : -1;
+    // console.log(`Are they positive? ${arePositiveFeelings}`);
+    student.grade += quantifiedFeelings * arePositiveFeelings;
+    // console.log(`Current student grade: ${student.grade}`);
+  }
 }
 
 /*
@@ -159,6 +169,7 @@ class Student extends Lambdasian {
     this.previousBackground = args.previousBackground;
     this.className = args.className;
     this.favSubjects = args.favSubjects;
+    this.grade = 99;
   }
 
   listSubjects() {
@@ -169,6 +180,9 @@ class Student extends Lambdasian {
   }
   sprintChallenge(subject) {
     return `${this.name} has begun a sprint challenge on ${subject}`;
+  }
+  graduate() {
+    return (this.grade > 70) ? `The student scored ${this.grade}. Congratulations! You made it!` : `This student scored ${this.grade}, perhaps try again?`;
   }
 }
 
@@ -222,3 +236,25 @@ if (typeof exports !== 'undefined') {
   if (Student) { module.exports.Student = Student }
   if (ProjectManager) { module.exports.ProjectManager = ProjectManager }
 }
+
+
+const student = new Student({
+  name: 'Tim',
+  age: '23',
+  location: 'California',
+  previousBackground: 'Worked at Walmart.',
+  className: 'Web32',
+  favSubjects: 'CS'
+});
+
+const teacher = new Instructor({
+  name: 'Thomas',
+  age: '32',
+  location: 'California',
+  specialty: 'Node',
+  favLanguage: 'Javascript',
+  catchPhrase: 'Catch me outside!'
+});
+
+teacher.adjustGradeBasedOnPersonalBias(student);
+console.log(student.graduate());
