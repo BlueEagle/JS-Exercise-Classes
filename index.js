@@ -129,6 +129,10 @@ class Instructor extends Lambdasian {
     this.favLanguage = args.favLanguage;
     this.catchPhrase = args.catchPhrase;
   }
+
+  demo(subject) {
+    return `Today we are learning about ${subject}`;
+  }
 }
 
 /*
