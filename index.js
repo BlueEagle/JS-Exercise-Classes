@@ -156,7 +156,9 @@ class Instructor extends Lambdasian {
 class Student extends Lambdasian {
   constructor(args) {
     super(args);
-    
+    this.previousBackground = args.previousBackground;
+    this.className = args.className;
+    this.favSubjects = args.favSubjects;
   }
 }
 
