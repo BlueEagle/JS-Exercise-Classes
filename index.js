@@ -80,7 +80,7 @@ class Car {
     if(distance > milesThatCanBeDriven) distance = milesThatCanBeDriven; // limited to max physical possibility
     this.odometer += distance;
     this.tank = (milesThatCanBeDriven - distance) / this.milesPerGallon;
-    
+    if (this.tank === 0) return `I ran out of fuel at ${this.odometer} miles!`;
   }
 }
 
