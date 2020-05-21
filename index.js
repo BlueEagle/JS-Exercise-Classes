@@ -125,7 +125,9 @@ class Lambdasian {
 class Instructor extends Lambdasian {
   constructor(args) {
     super(args);
-    
+    this.specialty = args.specialty;
+    this.favLanguage = args.favLanguage;
+    this.catchPhrase = args.catchPhrase;
   }
 }
 
