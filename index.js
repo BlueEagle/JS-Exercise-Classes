@@ -41,7 +41,15 @@ class Airplane {
 */
 
 class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+    this.stomach = [];
+  }
 
+  eat(someFood) { if(this.stomach.length < 10) this.stomach.push(someFood); }
+  poop() { this.stomach = []; }
+  toString() { return `${this.name}, ${this.age}`; }
 }
 
 /*
@@ -59,7 +67,21 @@ class Person {
 */
 
 class Car {
+  constructor(model, milesPerGallon) {
+    this.model = model;
+    this.milesPerGallon = milesPerGallon;
+    this.tank = 0;
+    this.odometer = 0;
+  }
 
+  fill(gallons) { this.tank += gallons; }
+  drive(distance) { 
+    let milesThatCanBeDriven = this.tank * this.milesPerGallon;
+    if(distance > milesThatCanBeDriven) distance = milesThatCanBeDriven; // limited to max physical possibility
+    this.odometer += distance;
+    this.tank = (milesThatCanBeDriven - distance) / this.milesPerGallon;
+    if (this.tank === 0) return `I ran out of fuel at ${this.odometer} miles!`;
+  }
 }
 
 /*
@@ -75,7 +97,15 @@ class Car {
         + {name} and {location} of course come from the instance's own properties.
 */
 class Lambdasian {
+  constructor(args) {
+    this.name = args.name;
+    this.age = args.age;
+    this.location = args.location;
+  }
 
+  speak() {
+    return `Hello my name is ${this.name}, and I am from ${this.location}`;
+  }
 }
 
 /*
@@ -92,8 +122,30 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
+class Instructor extends Lambdasian {
+  constructor(args) {
+    super(args);
+    this.specialty = args.specialty;
+    this.favLanguage = args.favLanguage;
+    this.catchPhrase = args.catchPhrase;
+  }
 
+  demo(subject) {
+    return `Today we are learning about ${subject}`;
+  }
+  grade(student, subject) {
+    return `${student.name} recieves a perfect score on ${subject}`;
+  }
+  adjustGradeBasedOnPersonalBias(student) {
+    let corruptionLevel = 50; // Optimally, this should be closer to 30
+    // console.log(`Current student grade: ${student.grade}`);
+    let quantifiedFeelings = Math.round(Math.random()*corruptionLevel);
+    // console.log(`I feel ${quantifiedFeelings} toward the student.`);
+    let arePositiveFeelings = (Math.random() >= .5) ? 1 : -1;
+    // console.log(`Are they positive? ${arePositiveFeelings}`);
+    student.grade += quantifiedFeelings * arePositiveFeelings;
+    // console.log(`Current student grade: ${student.grade}`);
+  }
 }
 
 /*
@@ -111,8 +163,27 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
+class Student extends Lambdasian {
+  constructor(args) {
+    super(args);
+    this.previousBackground = args.previousBackground;
+    this.className = args.className;
+    this.favSubjects = args.favSubjects;
+    this.grade = 99;
+  }
 
+  listSubjects() {
+    return `Loving ${this.favSubjects.toString()}!`
+  }
+  PRAssignment(subject) {
+    return `${this.name} has submitted a PR for ${subject}`;
+  }
+  sprintChallenge(subject) {
+    return `${this.name} has begun a sprint challenge on ${subject}`;
+  }
+  graduate() {
+    return (this.grade > 70) ? `The student scored ${this.grade}. Congratulations! You made it!` : `This student scored ${this.grade}, perhaps try again?`;
+  }
 }
 
 /*
@@ -128,8 +199,19 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
+class ProjectManager extends Instructor {
+  constructor(args) {
+    super(args);
+    this.gradClassName = args.gradClassName;
+    this.favInstructor = args.favInstructor;
+  }
 
+  standUp(slackChannel) {
+    return `${this.name} announces to ${slackChannel}, @channel standy times!`;
+  }
+  debugsCode(student, subject) {
+    return `${this.name} debugs ${student.name}'s code on ${subject}`;
+  }
 }
 
 /*
@@ -154,3 +236,25 @@ if (typeof exports !== 'undefined') {
   if (Student) { module.exports.Student = Student }
   if (ProjectManager) { module.exports.ProjectManager = ProjectManager }
 }
+
+
+const student = new Student({
+  name: 'Tim',
+  age: '23',
+  location: 'California',
+  previousBackground: 'Worked at Walmart.',
+  className: 'Web32',
+  favSubjects: 'CS'
+});
+
+const teacher = new Instructor({
+  name: 'Thomas',
+  age: '32',
+  location: 'California',
+  specialty: 'Node',
+  favLanguage: 'Javascript',
+  catchPhrase: 'Catch me outside!'
+});
+
+teacher.adjustGradeBasedOnPersonalBias(student);
+console.log(student.graduate());
